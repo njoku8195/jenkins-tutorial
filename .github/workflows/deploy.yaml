@@ -12,9 +12,10 @@ env:
   owner: Kings
 
 jobs:
-  name: "List Environmental variables"
-  runs-on: ubuntu-latest
-  steps:
+  deploy:
+    name: "Deploy-staging"
+    runs-on: ubuntu-latest
+    steps:
     - name: Checkout and Clone Repo
       uses: actions/checkout@v3
       with: 
@@ -24,17 +25,17 @@ jobs:
       run: |
         echo $GITHUB_REF | awk -F '/' '{print $3}' >> $GITHUB_ENV
 
-      - name: Extract the Github sha
-        run: |
-          echo $GITHUB_SHA | cut -c1-7 >> $GITHUB_ENV
-      - name: Check how to run on a single line
-        run: echo $(pwd) >> GITHUB_ENV
+    - name: Extract the Github sha
+      run: |
+        echo $GITHUB_SHA | cut -c1-7 >> $GITHUB_ENV
+    - name: Check how to run on a single line
+      run: echo $(pwd) >> GITHUB_ENV
       
-      - name: Run Multiple commands
-        run:
+    - name: Run Multiple commands
+      run:
           pwd
           ls
-      - name: Echo env variables
-        run: |
+    - name: Echo env variables
+      run: |
           echo 'Hi ${{ env.mascot }}'
           echo 'Hi ${{ env.owner }} you did a good job'
