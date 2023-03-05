@@ -29,7 +29,7 @@ jobs:
       run: |
         echo "SHORT_SHA=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_ENV
     - name: Check how to run on a single line
-      run: echo "$(pwd)" >> GITHUB_ENV
+      run: echo "MYDIR=$(pwd | awk -F '/' '{print $4}')" >> GITHUB_ENV
       
     - name: Run Multiple commands
       run:
