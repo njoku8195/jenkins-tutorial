@@ -1,12 +1,22 @@
 name: Github actions tutorial
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      username:
+        description: 'Your Github username'
+        required: true
+      reason:
+        description: 'Why are you running this workflow'
+        required: true
+        default: 'I am running tests before implementing an automated workflow'
+        
+  #push:
+    #branches:
+      #- main
+  #pull_request:
+    #branches:
+      #- main
 env:
   mascot: Mona
   owner: Kings
@@ -23,13 +33,14 @@ jobs:
 
     - name: Extract branch name
       run: |
-        echo $GITHUB_REF | awk -F '/' '{print $3}' >> $GITHUB_ENV
+        echo "SHORT_REF=$(echo ${GITHUB_REF} | awk -F '/' '{print $3}')" >> $GITHUB_ENV
 
     - name: Extract the Github sha
       run: |
-        echo $GITHUB_SHA | cut -c1-7 >> $GITHUB_ENV
+        echo "SHORT_SHA=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_ENV
+   
     - name: Check how to run on a single line
-      run: echo $(pwd) >> GITHUB_ENV
+      run: echo "MYDIR=$(echo ${GITHUB_WORKSPACE} | awk -F '/' '{print $4}')" >> GITHUB_ENV
       
     - name: Run Multiple commands
       run:
@@ -39,3 +50,15 @@ jobs:
       run: |
           echo 'Hi ${{ env.mascot }}'
           echo 'Hi ${{ env.owner }} you did a good job'
+     
+    - name: echo-default-env-variables
+      run: |
+        echo "Home: ${HOME}"
+        echo "GITHUB_WORKFLOW: ${GITHUB_WORKFLOW}"
+        echo "GITHUB_ACTIONS: ${GITHUB_ACTIONS}"
+        echo "GITHUB_ACTOR: ${GITHUB_ACTOR}"
+        echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}"
+        echo "GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}"
+        echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
+        echo "GITHUB_SHA: ${GITHUB_SHA}"
+        echo "GITHUB_REF: ${GITHUB_REF}"
