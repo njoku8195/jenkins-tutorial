@@ -1,12 +1,22 @@
 name: Github actions tutorial
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      username:
+        description: 'Your Github username'
+        required: true
+      reason:
+        description: 'Why are you running this workflow'
+        required: true
+        default: 'I am running tests before implementing an automated workflow'
+        
+  #push:
+    #branches:
+      #- main
+  #pull_request:
+    #branches:
+      #- main
 env:
   mascot: Mona
   owner: Kings
